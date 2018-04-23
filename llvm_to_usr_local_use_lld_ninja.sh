@@ -7,7 +7,7 @@ REV=328745
 cd /home/$USER/LLVM
 
 echo "Checkout LLVM..."
-svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
+svn co -r$REV http://llvm.org/svn/llvm-project/llvm/trunk llvm
 echo $LLVMDIR
 
 cd $LLVMDIR
@@ -21,6 +21,11 @@ echo "Checkout Clang Tools..."
 svn co -r$REV http://llvm.org/svn/llvm-project/clang-tools-extra/trunk extra
 
 cd $LLVMDIR
+cd llvm/projects
+echo "Checking out Compiler-RT..."
+svn co -r$REV http://llvm.org/svn/llvm-project/compiler-rt/trunk compiler-rt
+
+cd $LLVMDIR
 cd llvm/tools
 echo "Checkout LLD..."
 svn co -r$REV http://llvm.org/svn/llvm-project/lld/trunk lld
@@ -32,7 +37,7 @@ svn co -r$REV http://llvm.org/svn/llvm-project/polly/trunk polly
 
 cd $LLVMDIR
 cd llvm/projects
-ech "Checkout OpenMp support..."
+echo "Checkout OpenMp support..."
 svn co -r$REV http://llvm.org/svn/llvm-project/openmp/trunk openmp
 
 cd $LLVMDIR
@@ -44,6 +49,7 @@ svn co -r$REV http://llvm.org/svn/llvm-project/libcxxabi/trunk libcxxabi
 cd $LLVMDIR
 mkdir -p build
 cd build
-cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LLD=ON -DLLVM_TARGETS_TO_BUILD="X86" ../llvm/
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LLD=ON \
+						-DLLVM_TARGETS_TO_BUILD="X86;AMDGPU" ../llvm/
 
-ninja
+make -j12
