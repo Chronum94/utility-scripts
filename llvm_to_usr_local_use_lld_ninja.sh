@@ -49,7 +49,7 @@ svn co -r$REV http://llvm.org/svn/llvm-project/libcxxabi/trunk libcxxabi
 cd $LLVMDIR
 mkdir -p build
 cd build
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LLD=ON \
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LLD=ON \
 						-DLLVM_TARGETS_TO_BUILD="X86;AMDGPU" ../llvm/
 
-make -j12
+ninja
